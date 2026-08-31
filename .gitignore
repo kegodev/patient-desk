@@ -1,0 +1,11 @@
+# Local/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Never commit local secrets/backups
+*.backup.json
+patient-desk-encrypted-backup-*.json
+.env
+.env.*

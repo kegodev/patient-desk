@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#153b37" name="theme-color"/>
+<link href="assets/patient-desk-logo.jpg" rel="icon"/>
+<link href="assets/patient-desk-logo.jpg" rel="apple-touch-icon"/>
+<title>Admin Control</title><link href="css/styles.css" rel="stylesheet"/>
+<!-- Supabase build: client-side AES-256-GCM encrypted patient data + RLS + filtered PDF register export -->
+
+</head>
+<body class="auth-signed-out">
+<div class="app-shell">
+<aside aria-label="Primary navigation" class="sidebar">
+<div class="brand">
+<img alt="Admin Control logo" class="brand-logo" src="assets/patient-desk-logo.jpg"/>
+<div>
+<div class="brand-name">Admin Control</div>
+<div class="brand-sub">Surgery records</div>
+</div>
+</div>
+<div class="nav-label">Workspace</div>
+<nav class="nav-list">
+<button class="nav-item active" data-view="home">
+<svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5 10.5V20h14v-9.5M9 20v-6h6v6"></path></svg>
+<span>Overview</span>
+</button>
+<button class="nav-item" data-view="clients">
+<svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+<span>Clients</span>
+</button>
+<button class="nav-item" data-view="consultations">
+<svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M16 3v4M8 3v4M3 11h18M9 16h6M12 13v6"></path></svg>
+<span>Consultations</span>
+</button>
+<button class="nav-item" data-legal-view="terms">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"></path><path d="M14 3v4h4M9 11h6M9 15h6"></path></svg>
+<span>Terms &amp; Conditions</span>
+</button>
+<button class="nav-item" data-legal-view="privacy">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="11" rx="2" width="14" x="5" y="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"></path></svg>
+<span>Privacy Policy</span>
+</button>
+<button class="nav-item" data-view="settings">
+<svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.5 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.08a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.08a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15Z"></path></svg>
+<span>Settings</span>
+</button>
+</nav>
+<div class="sidebar-footer">
+<div class="user-card">
+<div class="avatar">AD</div>
+<div>
+<div class="user-name" id="sidebar-user-name">Administrator</div>
+<div class="user-role" id="sidebar-practice-name">Admin Control</div>
+</div>
+</div>
+</div>
+</aside>
+<main class="main">
+<header class="topbar">
+<div aria-label="Admin Control" class="crumb"><img alt="Admin Control logo" class="crumb-logo" src="assets/patient-desk-logo.jpg"/><strong class="sr-only" id="crumb-current">Overview</strong></div>
+<div class="top-actions">
+<button aria-controls="header-menu" aria-expanded="false" aria-label="Open navigation menu" class="icon-button menu-button" id="menu-toggle" title="Menu">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" viewbox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+</button>
+<nav aria-label="Header navigation" class="header-menu" id="header-menu">
+<button class="nav-item active signed-in-only" data-view="home"><svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5 10.5V20h14v-9.5"></path></svg><span>Overview</span></button>
+<button class="nav-item signed-in-only" data-view="clients"><svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><circle cx="9" cy="7" r="4"></circle><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87"></path></svg><span>Clients</span></button>
+<button class="nav-item signed-in-only" data-view="consultations"><svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M8 3v4M16 3v4M3 11h18"></path></svg><span>Visits</span></button>
+<button class="nav-item" data-legal-view="terms"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"></path><path d="M14 3v4h4M9 11h6M9 15h6"></path></svg><span>Terms &amp; Conditions</span></button>
+<button class="nav-item" data-legal-view="privacy"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="11" rx="2" width="14" x="5" y="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"></path></svg><span>Privacy Policy</span></button>
+<button class="nav-item signed-in-only" data-view="settings"><svg aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19 12a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"></path></svg><span>Settings</span></button>
+<div aria-hidden="true" class="menu-divider signed-in-only"></div>
+<div class="menu-account signed-in-only"><span>Signed in</span><strong id="menu-account-email">—</strong></div>
+<button class="nav-item signed-in-only" id="sign-out-menu"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"></path></svg><span>Sign out</span></button>
+<button class="nav-item signed-out-only" data-auth-view="login"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M14 7l5 5-5 5M19 12H7"></path><path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5"></path></svg><span>Login</span></button>
+<div aria-hidden="true" class="menu-divider"></div>
+</nav>
+</div>
+</header>
+<section aria-live="polite" class="auth-stage" id="auth-stage">
+<div class="auth-card auth-panel" id="auth-login">
+<div class="auth-card-top">
+<img alt="Admin Control logo" class="auth-brand-logo" src="assets/patient-desk-logo.jpg"/>
+<div class="eyebrow">Secure access</div>
+<h1>Login</h1>
+<p>Sign in with the administrator account provided for this surgery.</p>
+</div>
+<div class="auth-card-body">
+<div class="auth-message" id="login-message"></div>
+<form class="auth-form" id="login-form">
+<div class="field"><label for="login-email">Email address</label><input autocomplete="email" id="login-email" name="email" placeholder="admin@surgery.co.za" required="" type="email"/></div>
+<div class="field"><label for="login-password">Password</label><input autocomplete="current-password" id="login-password" name="password" placeholder="Enter password" required="" type="password"/></div>
+<button class="primary-button" id="login-submit" type="submit">Login to Admin Control</button>
+</form>
+<div class="auth-meta"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path></svg><span>Secure administrator authentication powered by Supabase.</span></div>
+</div>
+</div>
+<div class="auth-card auth-panel" hidden="" id="auth-crypto">
+<div class="auth-card-top">
+<img alt="Admin Control logo" class="auth-brand-logo" src="assets/patient-desk-logo.jpg"/>
+<div class="eyebrow">Encrypted patient data</div>
+<h1 id="crypto-title">Unlock surgery data</h1>
+<p id="crypto-copy">Enter this surgery's encryption passphrase. Decryption happens only on this device.</p>
+</div>
+<div class="auth-card-body">
+<div class="auth-message" id="crypto-message"></div>
+<form class="auth-form" id="crypto-form">
+<div class="field"><label for="crypto-passphrase">Encryption passphrase</label><input autocomplete="off" id="crypto-passphrase" minlength="12" name="passphrase" placeholder="Enter encryption passphrase" required="" type="password"/></div>
+<div class="field" hidden="" id="crypto-confirm-field"><label for="crypto-confirm">Confirm encryption passphrase</label><input autocomplete="off" id="crypto-confirm" minlength="12" name="confirm" placeholder="Re-enter encryption passphrase" type="password"/></div>
+<button class="primary-button" id="crypto-submit" type="submit">Unlock patient data</button>
+<button class="ghost-button" id="crypto-signout" type="button">Sign out</button>
+</form>
+<div class="auth-meta"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="M9 12l2 2 4-4"></path></svg><span id="crypto-meta">AES-256-GCM encryption. The passphrase and unwrapped encryption key are never stored in the browser.</span></div>
+</div>
+</div>
+<div class="auth-card auth-panel" hidden="" id="auth-database">
+<div class="auth-card-top">
+<div class="auth-lock-mark"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v7c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12v7c0 1.7 3.6 3 8 3s8-1.3 8-3v-7"></path></svg></div>
+<div class="eyebrow">One-time database setup</div>
+<h1>Supabase tables required</h1>
+<p>Your account is authenticated, but the Admin Control database schema has not been created yet.</p>
+</div>
+<div class="auth-card-body database-help">
+<div class="auth-message show error" id="database-message">Run <strong>sql/00_full_recovery.sql</strong> for a fresh Supabase project, or <strong>sql/02_e2ee_migration.sql</strong> if the base schema already exists, then reload this page.</div>
+<button class="ghost-button" id="database-retry" type="button">Retry connection</button>
+<button class="danger-button" id="database-signout" type="button">Sign out</button>
+</div>
+</div>
+</section>
+<div class="content">
+<section class="view" id="view-home">
+<div class="page-heading">
+<div>
+<div class="eyebrow" id="today-label">Thursday, 13 August</div>
+<h1 id="dashboard-practice-name">Your surgery</h1>
+<p>Patient files and practice records, organized and securely accessible in one place.</p>
+</div>
+<button class="primary-button add-client-trigger">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+<span>Add new client</span>
+</button>
+</div>
+<div class="stats-grid">
+<article class="stat-card featured">
+<div class="stat-top"><span class="stat-label">Total clients</span><span class="stat-icon"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6M16 11h6"></path></svg></span></div>
+<div class="stat-value" id="stat-clients">0</div>
+<div class="stat-note">Registered client files</div>
+</article>
+<article class="stat-card">
+<div class="stat-top"><span class="stat-label">Consulted this month</span><span class="stat-icon"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg></span></div>
+<div class="stat-value" id="stat-consultations">0</div>
+<div class="stat-note">Client and beneficiary visits</div>
+</article>
+<article class="stat-card">
+<div class="stat-top"><span class="stat-label">Beneficiaries</span><span class="stat-icon"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="8" r="3"></circle><path d="M2 20v-2a5 5 0 0 1 10 0v2M12 20v-2a5 5 0 0 1 10 0v2"></path></svg></span></div>
+<div class="stat-value" id="stat-beneficiaries">0</div>
+<div class="stat-note">Linked to primary members</div>
+</article>
+<article class="stat-card">
+<div class="stat-top"><span class="stat-label">Visits today</span><span class="stat-icon"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 8v4l3 2"></path><circle cx="12" cy="12" r="9"></circle></svg></span></div>
+<div class="stat-value" id="stat-today">0</div>
+<div class="stat-note">Recorded consultation visits</div>
+</article>
+</div>
+<section aria-label="Client search" class="search-panel">
+<div class="search-copy">
+<h2>Find a client quickly</h2>
+<p>Search by client name, file number, ID number or medical aid.</p>
+</div>
+<div class="search-wrap">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+<input aria-label="Search client records" autocomplete="off" class="search-input" id="home-search" placeholder="Start typing a client name..." type="search"/>
+<button aria-label="Clear search" class="clear-search" id="clear-search">×</button>
+</div>
+</section>
+<section aria-labelledby="directory-heading" class="panel">
+<div class="panel-header">
+<div class="panel-title">
+<h2 id="directory-heading">Client directory</h2>
+<p id="result-count">0 registered clients</p>
+</div>
+<div class="filter-row">
+<select aria-label="Sort client directory" class="compact-select" id="home-sort">
+<option value="recent">Recently consulted</option>
+<option value="name">Name A–Z</option>
+<option value="file">File number</option>
+</select>
+</div>
+</div>
+<div id="home-table"></div>
+</section>
+</section>
+<section class="view" hidden="" id="view-clients">
+<div class="page-heading">
+<div>
+<div class="eyebrow">Record management</div>
+<h1>Clients</h1>
+<p>Browse and manage every client file in one place.</p>
+</div>
+<button class="primary-button add-client-trigger">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+<span>Add new client</span>
+</button>
+</div>
+<section class="panel">
+<div class="panel-header">
+<div class="panel-title"><h2>All client files</h2><p id="clients-result-count">0 clients</p></div>
+<div class="search-wrap" style="width:min(330px,50vw)">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+<input aria-label="Search all clients" class="search-input" id="clients-search" placeholder="Search records..." style="height:42px;box-shadow:none;border-color:var(--line)" type="search"/>
+</div>
+</div>
+<div id="clients-table"></div>
+</section>
+</section>
+<section class="view" hidden="" id="view-consultations">
+<div class="page-heading">
+<div>
+<div class="eyebrow">Visit history</div>
+<h1>Consultations</h1>
+<p>A complete record of client and beneficiary consultations.</p>
+</div>
+<button class="primary-button" id="record-from-page">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+<span>Record consultation</span>
+</button>
+</div>
+<section class="panel">
+<div class="panel-header">
+<div class="panel-title"><h2>Consultation register</h2><p id="consultation-count">0 recorded visits</p></div>
+<select aria-label="Filter consultation type" class="compact-select" id="consultation-filter">
+<option value="all">All people</option>
+<option value="client">Primary clients</option>
+<option value="beneficiary">Beneficiaries</option>
+</select>
+</div>
+<div id="consultations-table"></div>
+</section>
+</section>
+<section class="view" hidden="" id="view-settings">
+<div class="page-heading">
+<div>
+<div class="eyebrow">Workspace</div>
+<h1>Settings &amp; data</h1>
+<p>Manage this surgery workspace and its Supabase data.</p>
+</div>
+</div>
+<div class="split-grid">
+<section class="panel info-card">
+<h2>Data controls</h2>
+<p>Patient and consultation content is encrypted in the browser before it is saved to Supabase.</p>
+<div class="setting-list">
+<div class="setting-row">
+<div><h3>Supabase connection</h3><p id="supabase-status">Checking database connection…</p></div>
+<span class="status-badge sync-badge">Connected data</span>
+</div>
+<div class="setting-row">
+<div><h3>Client-side encryption</h3><p id="encryption-status">Locked</p></div>
+<button class="ghost-button small-button" id="lock-data">Lock data</button>
+</div>
+<div class="setting-row">
+<div><h3>Download encrypted backup</h3><p>Export ciphertext, encrypted records and the wrapped surgery key. The passphrase is never included.</p></div>
+<button class="ghost-button small-button" id="export-data">Export</button>
+</div>
+<div class="setting-row">
+<div><h3>Download patient register PDF</h3><p>Choose medical aids and a date range. The PDF is generated locally from decrypted data and lists patient names and file numbers alphabetically.</p></div>
+<button class="secondary-button small-button" id="open-pdf-export">Create PDF</button>
+</div>
+</div>
+</section>
+<aside class="panel privacy-card">
+<div class="privacy-icon"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="11" rx="2" width="14" x="5" y="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"></path></svg></div>
+<h2>Patient data protection</h2>
+<p>Admin Control uses Supabase authentication and Row Level Security plus client-side AES-256-GCM encryption. Patient content is decrypted only after an authorised user unlocks the surgery key in the browser. Supabase stores ciphertext for protected fields; structural metadata such as practice IDs, record IDs and creation timestamps remains visible to the database.</p>
+</aside>
+</div>
+</section>
+</div>
+<footer class="site-footer">
+<div class="footer-copy">
+<span>Copyright © <span id="copyright-year">2026</span> Admin Control. All rights reserved.</span>
+<span>Designed by <strong>KM Digital Labs</strong></span>
+</div>
+<div aria-label="Legal links" class="footer-legal">
+<button class="footer-link" data-legal-view="terms" type="button">Terms &amp; Conditions</button>
+<button class="footer-link" data-legal-view="privacy" type="button">Privacy Policy</button>
+</div>
+</footer>
+</main>
+</div>
+<section aria-labelledby="terms-title" class="legal-page" hidden="" id="legal-terms">
+<div class="legal-topbar">
+<img alt="Admin Control logo" src="assets/patient-desk-logo.jpg"/>
+<button aria-label="Close Terms and Conditions" class="legal-close" data-close-legal="" type="button">×</button>
+</div>
+<main class="legal-content">
+<header class="legal-hero">
+<div class="eyebrow">Legal</div>
+<h1 id="terms-title">Terms &amp; Conditions</h1>
+<p>Terms governing authorised use of the encrypted Admin Control patient-administration platform.</p>
+<div class="legal-meta">Effective date: 15 August 2026</div>
+</header>
+<div class="legal-notice"><strong>Important:</strong> Admin Control supports surgery administration and record management. It does not replace a practice's own patient notices, consent processes, POPIA programme, PAIA obligations, clinical policies, professional duties or legal advice. Each practice remains responsible for determining the lawful basis, purpose and retention rules for the information it processes.</div>
+<article class="legal-document">
+<section>
+<h2>1. Acceptance and authorised use</h2>
+<p>By accessing or using Admin Control, the medical practice and each authorised staff member agree to these Terms &amp; Conditions. The service may be used only for legitimate practice administration and record-management activities within the surgery workspace to which the user has been authorised.</p>
+</section>
+<section>
+<h2>2. Purpose and clinical limitation</h2>
+<p>Admin Control is an administrative patient-record and reception workflow system for locating patient files, managing beneficiaries and medical-aid information, recording consultation administration, searching records, creating permitted exports and maintaining encrypted backups.</p>
+<p>The platform is not a diagnostic system, clinical decision-support system, emergency service, electronic prescribing system or substitute for professional medical judgement. Clinical decisions must never be based solely on the platform.</p>
+</section>
+<section>
+<h2>3. Practice responsibilities</h2>
+<p>The practice generally determines why and how patient information is collected and used in its workspace and must ensure that such processing is lawful, adequate, relevant and not excessive for the intended purpose.</p>
+<ul>
+<li>Restrict access to staff who genuinely require it for authorised duties.</li>
+<li>Keep patient and beneficiary information accurate and update it when reasonably necessary.</li>
+<li>Maintain appropriate patient-facing notices, permissions, lawful grounds and records of processing where required.</li>
+<li>Maintain retention, correction, deletion, incident-response and information-security procedures appropriate to the practice.</li>
+<li>Avoid unnecessary clinical or highly sensitive detail in reception notes.</li>
+<li>Review access promptly when a staff member leaves the practice or changes role.</li>
+</ul>
+</section>
+<section>
+<h2>4. Accounts, devices and credentials</h2>
+<p>Users must protect login credentials, use strong passwords, sign out from shared devices and prevent unauthorised access to devices used for Admin Control. Credentials should not be shared between staff members. Suspected credential theft, device compromise or unauthorised account access must be reported promptly to the practice administrator.</p>
+</section>
+<section>
+<h2>5. Client-side encryption and surgery passphrase</h2>
+<p>Protected patient content is encrypted in the browser before it is stored in Supabase. The surgery encryption passphrase is used to unlock the surgery data-encryption key in the browser and is not included in database records or encrypted backups.</p>
+<ul>
+<li>The practice must choose a strong, unique passphrase and keep it in a secure recovery location under its control.</li>
+<li>The passphrase must not be sent through insecure channels or stored in ordinary reception notes.</li>
+<li>If the passphrase is lost and no authorised recovery copy exists, encrypted patient content may become permanently inaccessible.</li>
+<li>KM Digital Labs, Supabase or another infrastructure provider may be unable to recover encrypted content without the surgery's passphrase or an authorised unlocked session.</li>
+<li>Encryption reduces exposure of stored content but does not protect against every risk, including a compromised authorised device, malicious browser extension, stolen credentials, social engineering or an already-unlocked session.</li>
+</ul>
+</section>
+<section>
+<h2>6. Workspace separation and access controls</h2>
+<p>Records are assigned to surgery workspaces and database Row Level Security is used to restrict authenticated access according to workspace membership. Users may not attempt to bypass, probe, disable or circumvent access controls or attempt to access another practice's data.</p>
+</section>
+<section>
+<h2>7. Prohibited use</h2>
+<p>Users may not use Admin Control for unlawful processing, unauthorised surveillance, credential sharing, deliberate disclosure of patient information, malware, security testing without permission, attempts to gain unauthorised access, or any activity that compromises patient privacy, encryption, system security or service availability.</p>
+</section>
+<section>
+<h2>8. PDF exports and encrypted backups</h2>
+<p>Downloaded files become the practice's responsibility once created on an authorised device. Patient-register PDFs are readable documents and must be protected accordingly. Encrypted JSON backups contain encrypted records and the wrapped surgery key but do not contain the surgery passphrase. The practice must securely store, transfer, retain and destroy exports and backups.</p>
+</section>
+<section>
+<h2>9. Third-party infrastructure</h2>
+<p>Admin Control may rely on Supabase and other hosting, network or browser infrastructure. Third-party service availability, regional hosting, authentication and technical metadata may be outside the direct control of KM Digital Labs. The practice should ensure that its chosen configuration and service agreements are suitable for its legal and operational requirements.</p>
+</section>
+<section>
+<h2>10. Security incidents</h2>
+<p>Users must promptly report suspected loss, unauthorised access, disclosure, malware, stolen credentials, exposed exports or other security incidents to the practice administrator. The practice remains responsible for its legal assessment and notifications as responsible party where applicable. Where KM Digital Labs acts as an operator and becomes aware of a relevant security compromise involving practice data, incident handling should follow the applicable service agreement and legal duties.</p>
+</section>
+<section>
+<h2>11. Fees, support and service changes</h2>
+<p>Setup fees, subscription fees, support scope, billing dates, service levels and practice-specific commitments are governed by the applicable quotation, invoice or service agreement. Features may be updated, replaced or restricted where reasonably necessary for security, compatibility, reliability or legal compliance.</p>
+</section>
+<section>
+<h2>12. Suspension and termination</h2>
+<p>Access may be suspended where reasonably necessary to address non-payment, unlawful use, abuse, a material security risk or a serious breach of these terms. On termination, export, deletion, retention and handover arrangements will follow the service agreement, applicable law and the practice's lawful instructions.</p>
+</section>
+<section>
+<h2>13. Availability and backups</h2>
+<p>No online service can guarantee uninterrupted availability or absolute security. Practices should maintain appropriate business-continuity procedures, verify critical records and keep authorised recovery material and encrypted backups where necessary for continuity.</p>
+</section>
+<section>
+<h2>14. Intellectual property</h2>
+<p>Unless otherwise agreed in writing, the Admin Control software, interface, branding and underlying application materials remain the intellectual property of their respective owner(s). A subscribing practice receives a limited, non-transferable right to use the service for its internal authorised operations during the applicable service period.</p>
+</section>
+<section>
+<h2>15. South African law</h2>
+<p>These terms are intended to operate under the laws of the Republic of South Africa. Nothing in them excludes or limits rights or obligations that cannot lawfully be excluded.</p>
+</section>
+<section>
+<h2>16. Changes to these terms</h2>
+<p>These terms may be updated where the service, security model, applicable law or operational requirements change. Material changes should be communicated through the service or applicable customer communication, and the effective date above identifies the current version.</p>
+</section>
+</article>
+</main>
+</section>
+<section aria-labelledby="privacy-title" class="legal-page" hidden="" id="legal-privacy">
+<div class="legal-topbar">
+<img alt="Admin Control logo" src="assets/patient-desk-logo.jpg"/>
+<button aria-label="Close Privacy Policy" class="legal-close" data-close-legal="" type="button">×</button>
+</div>
+<main class="legal-content">
+<header class="legal-hero">
+<div class="eyebrow">Privacy</div>
+<h1 id="privacy-title">Privacy Policy</h1>
+<p>How the encrypted Admin Control platform processes information used by authorised medical practices.</p>
+<div class="legal-meta">Effective date: 15 August 2026</div>
+</header>
+<div class="legal-notice"><strong>Scope:</strong> This policy describes the platform's data handling and security design. Each medical practice remains responsible for its own patient-facing privacy notice and for ensuring that its processing complies with the Protection of Personal Information Act 4 of 2013 (POPIA), applicable health-profession rules and other legal requirements. This policy is not a certification of compliance.</div>
+<article class="legal-document">
+<section>
+<h2>1. Privacy roles</h2>
+<p>The medical practice ordinarily decides the purpose and means of processing its patient records and will generally act as the responsible party for that information. KM Digital Labs and infrastructure providers may act as operators or service providers when processing information on the practice's documented instructions. The applicable service agreement should define these roles and responsibilities.</p>
+</section>
+<section>
+<h2>2. Information processed</h2>
+<p>Depending on the features used, Admin Control may process:</p>
+<ul>
+<li>Staff account information such as name, email address, authentication identifiers and workspace membership.</li>
+<li>Practice information such as surgery name, configuration and branding.</li>
+<li>Patient information such as full name, identity number, file number, medical aid, medical-aid membership number and plan/option.</li>
+<li>Beneficiary information such as name, relationship and file number.</li>
+<li>Consultation administration such as visit date, visit type, person consulted and reception notes.</li>
+<li>Technical, security and audit-related information needed to authenticate users, maintain database relationships, enforce access controls, diagnose faults and protect the service.</li>
+</ul>
+</section>
+<section>
+<h2>3. Purpose of processing</h2>
+<p>Information is processed to provide authorised surgery administration, including patient-file retrieval, beneficiary management, consultation history, record accuracy, permitted register exports, encrypted backups, authentication, workspace separation, support and security.</p>
+</section>
+<section>
+<h2>4. Data minimisation and sensitive information</h2>
+<p>Patient, identity, medical-aid and health-related information may be sensitive or special personal information. Practices should collect and enter only information that is reasonably necessary for a defined legitimate purpose. Reception notes should be concise and administrative unless the practice has an approved lawful purpose and appropriate safeguards for additional clinical information.</p>
+</section>
+<section>
+<h2>5. Children and beneficiaries</h2>
+<p>Beneficiary records may relate to children. The practice is responsible for ensuring that such information is processed only where an appropriate lawful basis or authorisation exists and with any additional safeguards required by applicable law.</p>
+</section>
+<section>
+<h2>6. Client-side encryption</h2>
+<p>Protected patient content is encrypted in the user's browser before transmission to Supabase using client-side encryption. The browser unlocks the surgery data-encryption key only after an authorised user provides the surgery encryption passphrase. The passphrase itself is not stored in the patient database or included in encrypted backups.</p>
+<p>Structural metadata required for authentication, workspace membership, database relationships, security enforcement and application operation may remain available to infrastructure services. Client-side encryption is therefore an important security safeguard but does not mean that every piece of application metadata is encrypted.</p>
+</section>
+<section>
+<h2>7. Encryption passphrase and recovery</h2>
+<p>The surgery controls its encryption passphrase and is responsible for securing an authorised recovery copy. If the passphrase is lost and no recovery copy or authorised unlocked session is available, protected records may become permanently unreadable. Support personnel should never ask a user to send the surgery passphrase through ordinary email, chat or another insecure channel.</p>
+</section>
+<section>
+<h2>8. Access controls and confidentiality</h2>
+<p>Access is intended to be limited to authenticated users associated with the relevant surgery workspace. The platform combines authentication, database Row Level Security and client-side encryption. Practices must also secure endpoints, browsers, staff credentials and physical access because an authorised unlocked device can display decrypted patient content.</p>
+</section>
+<section>
+<h2>9. Supabase, hosting and cross-border processing</h2>
+<p>Admin Control uses Supabase for authentication and database services. Encrypted patient payloads and operational metadata may be processed or stored by Supabase according to the selected project region and service configuration. The practice should verify its hosting region and assess any cross-border processing or transfer obligations applicable to its records.</p>
+</section>
+<section>
+<h2>10. PDF exports and encrypted backups</h2>
+<p>The standard patient-register PDF is generated locally from decrypted browser data and is designed to contain patient names and file numbers only. Identity numbers, medical-aid membership numbers, beneficiary details and consultation notes are excluded from the standard register export. Encrypted JSON backups contain ciphertext and the wrapped surgery key; they do not include the surgery encryption passphrase.</p>
+<p>Once a readable PDF is downloaded, it is no longer protected by the database encryption layer. The practice must protect exported files with appropriate device, storage, transfer, access and destruction controls.</p>
+</section>
+<section>
+<h2>11. Retention, correction and deletion</h2>
+<p>The practice determines appropriate retention periods subject to applicable healthcare, professional, contractual and privacy requirements. Personal information should not be retained longer than authorised or necessary for the purpose for which it is processed, except where retention is required or permitted by law. Correction, deletion, restriction or destruction requests must be assessed by the responsible practice.</p>
+</section>
+<section>
+<h2>12. Data-subject rights and requests</h2>
+<p>Patients or other data subjects should direct requests concerning access to, correction of, deletion of, or objections relating to their practice records to the medical practice that collected the information. The practice should route requests through its Information Officer or designated privacy contact and respond according to applicable law.</p>
+</section>
+<section>
+<h2>13. Security safeguards</h2>
+<p>The platform is designed to use reasonable technical safeguards, including authenticated access, tenant/workspace isolation, Row Level Security and client-side encryption for protected patient content. Security also depends on strong passphrases, secure accounts, patched devices, safe browsers, appropriate permissions, staff training and sound operating procedures. No technical system can eliminate all security risk.</p>
+</section>
+<section>
+<h2>14. Security compromises and notification</h2>
+<p>If there are reasonable grounds to believe that personal information has been accessed or acquired by an unauthorised person, the practice should immediately activate its incident-response process. Where the practice is the responsible party, it remains responsible for assessing and making notifications required by POPIA. Where a service provider acts as an operator, it should notify the responsible party in accordance with applicable law and the service agreement.</p>
+</section>
+<section>
+<h2>15. Sharing, sale and advertising</h2>
+<p>Patient information is not intended to be sold or used for behavioural advertising. Information should be disclosed only where necessary to provide the service, on the practice's lawful instructions, or where disclosure is required or permitted by law.</p>
+</section>
+<section>
+<h2>16. Information Regulator and complaints</h2>
+<p>Data subjects may have rights to complain to the Information Regulator (South Africa) where they believe their personal information has been processed unlawfully. Each practice should provide the identity and contact details of its Information Officer or designated privacy contact in its own patient-facing privacy material.</p>
+</section>
+<section>
+<h2>17. Changes to this policy</h2>
+<p>This Privacy Policy may be updated when the service, encryption design, security practices, infrastructure or applicable legal requirements change. The effective date above identifies the version currently presented in the application.</p>
+</section>
+</article>
+</main>
+</section>
+<div class="overlay" id="overlay"></div>
+<section aria-labelledby="client-modal-title" aria-modal="true" class="modal page-modal" id="client-modal" role="dialog">
+<div class="modal-header">
+<div><h2 id="client-modal-title">Add a new client</h2><p>Create a primary member file and link beneficiaries.</p></div>
+<button aria-label="Close" class="icon-button close-layer">×</button>
+</div>
+<form id="client-form">
+<div class="modal-body">
+<div class="field-grid">
+<div class="field full"><label for="client-name">Full name <span class="required">*</span></label><input id="client-name" name="name" placeholder="Enter full name" required=""/></div>
+<div class="field"><label for="client-id">ID number <span class="required">*</span></label><input id="client-id" inputmode="numeric" maxlength="20" name="idNumber" placeholder="13-digit ID number" required=""/></div>
+<div class="field"><label for="client-file">File number <span class="required">*</span></label><input id="client-file" name="fileNumber" placeholder="Enter file number" required=""/></div>
+<div class="field"><label for="client-aid">Medical aid <span class="required">*</span></label><input id="client-aid" name="medicalAid" placeholder="Enter medical aid" required=""/></div>
+<div class="field"><label for="client-aid-number">Medical aid number</label><input autocomplete="off" id="client-aid-number" name="medicalAidNumber" placeholder="Enter medical aid membership number"/></div>
+<div class="field"><label for="client-plan">Plan / option</label><input id="client-plan" name="plan" placeholder="Enter plan / option"/></div>
+</div>
+<div class="section-divider">
+<div><h3>Beneficiaries</h3><p>Add dependants linked to this medical aid file.</p></div>
+<button class="secondary-button small-button" id="add-beneficiary" type="button">+ Add beneficiary</button>
+</div>
+<div class="beneficiary-form-list" id="beneficiary-form-list"></div>
+</div>
+<div class="modal-footer">
+<button class="ghost-button close-layer" type="button">Cancel</button>
+<button class="primary-button" type="submit">Save client</button>
+</div>
+</form>
+</section>
+<section aria-labelledby="consultation-modal-title" aria-modal="true" class="modal page-modal" id="consultation-modal" role="dialog">
+<div class="modal-header">
+<div><h2 id="consultation-modal-title">Record consultation</h2><p>Add a visit to the client file history.</p></div>
+<button aria-label="Close" class="icon-button close-layer">×</button>
+</div>
+<form id="consultation-form">
+<div class="modal-body">
+<div class="field-grid">
+<div class="field full"><label for="consult-client">Client file <span class="required">*</span></label><select id="consult-client" name="clientId" required=""></select></div>
+<div class="field full"><label for="consult-person">Who consulted? <span class="required">*</span></label><select id="consult-person" name="personKey" required=""></select></div>
+<div class="field"><label for="consult-date">Consultation date <span class="required">*</span></label><input id="consult-date" name="date" required="" type="date"/></div>
+<div class="field"><label for="consult-type">Visit type</label><select id="consult-type" name="type"><option>General consultation</option><option>Follow-up</option><option>Chronic care</option><option>Vaccination</option><option>Medical examination</option></select></div>
+<div class="field full"><label for="consult-notes">Reception notes</label><textarea id="consult-notes" name="notes" placeholder="Optional administrative note (avoid sensitive clinical details in this prototype)"></textarea><div class="field-hint">Keep this to scheduling or filing information only.</div></div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="ghost-button close-layer" type="button">Cancel</button>
+<button class="primary-button" type="submit">Record visit</button>
+</div>
+</form>
+</section>
+<section aria-labelledby="pdf-export-title" aria-modal="true" class="modal page-modal" id="pdf-export-modal" role="dialog">
+<div class="modal-header">
+<div><h2 id="pdf-export-title">Download patient register</h2><p>Filter the register before creating the PDF. The document contains patient names and file numbers only.</p></div>
+<button aria-label="Close" class="icon-button close-layer">×</button>
+</div>
+<form id="pdf-export-form">
+<div class="modal-body">
+<div class="field full">
+<label>Medical aids</label>
+<div class="pdf-filter-actions">
+<button class="ghost-button small-button" id="pdf-select-all-aids" type="button">Select all</button>
+<button class="ghost-button small-button" id="pdf-clear-aids" type="button">Clear</button>
+</div>
+<div aria-label="Medical aid filters" class="pdf-filter-list" id="pdf-medical-aid-list"></div>
+<div class="field-hint" id="pdf-aid-selection-hint">All medical aids are selected.</div>
+</div>
+<div class="section-divider">
+<div><h3>Date range</h3><p>Leave both dates blank to include patients from all dates.</p></div>
+</div>
+<div class="field-grid">
+<div class="field full">
+<label for="pdf-date-mode">Date range applies to</label>
+<select id="pdf-date-mode" name="dateMode">
+<option value="created">Patient date added</option>
+<option value="consultation">Consultation date</option>
+</select>
+</div>
+<div class="field"><label for="pdf-date-from">From</label><input id="pdf-date-from" name="dateFrom" type="date"/></div>
+<div class="field"><label for="pdf-date-to">To</label><input id="pdf-date-to" name="dateTo" type="date"/></div>
+</div>
+<div class="pdf-export-summary" id="pdf-export-summary">The exported list will be sorted alphabetically by patient name.</div>
+</div>
+<div class="modal-footer">
+<button class="ghost-button close-layer" type="button">Cancel</button>
+<button class="primary-button" id="download-pdf-register" type="submit">Download PDF</button>
+</div>
+</form>
+</section>
+<aside aria-labelledby="drawer-client-name" class="drawer" id="client-drawer">
+<div class="drawer-top">
+<div class="drawer-toolbar">
+<span class="person-badge">Client file</span>
+<button aria-label="Close client details" class="icon-button close-layer">×</button>
+</div>
+<div class="drawer-profile">
+<div class="drawer-initials" id="drawer-initials">--</div>
+<div><h2 id="drawer-client-name">Client name</h2><p id="drawer-file-number">File number</p></div>
+</div>
+</div>
+<div class="drawer-body" id="drawer-content"></div>
+</aside>
+<div aria-live="polite" class="toast" id="toast" role="status"><span class="toast-check">✓</span><span id="toast-message">Saved</span></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+
+<script src="js/config.js"></script><script src="js/app.js"></script></body>
+</html>
