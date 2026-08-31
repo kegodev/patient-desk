@@ -68,3 +68,5 @@ This repository is static and can be hosted directly with GitHub Pages. Set the 
 - Do not commit service-role keys, database passwords, or surgery encryption passphrases.
 
 Designed by KM Digital Labs.
+All copy rights are reserved.
+Do not edit or use this work as yours without permission from the owner
