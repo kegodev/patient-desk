@@ -1,0 +1,37 @@
+name: Patient Desk Quality Checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate static app and repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check js/app.js
+          node --check js/config.js
+          node --check js/config.example.js
+
+      - name: Run repository smoke checks
+        run: node tests/repository-smoke-check.mjs
+
+      - name: Quality check summary
+        run: echo "Patient Desk repository validation passed."
